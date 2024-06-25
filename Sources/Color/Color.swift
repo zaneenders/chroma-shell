@@ -66,6 +66,54 @@ public func foreground(_ color: Color, _ str: String) -> AnsiString {
     return colorString + str + AnsiCode.reset.rawValue
 }
 
+public func background(_ color: Color, _ str: String) -> AnsiString {
+    // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+    let colorString: String
+    switch color {
+    case let .basic(basic):
+        switch basic {
+        case .black:
+            colorString = "\u{001b}[40m"
+        case .red:
+            colorString = "\u{001b}[41m"
+        case .green:
+            colorString = "\u{001b}[42m"
+        case .yellow:
+            colorString = "\u{001b}[43m"
+        case .blue:
+            colorString = "\u{001b}[44m"
+        case .magenta:
+            colorString = "\u{001b}[45m"
+        case .cyan:
+            colorString = "\u{001b}[46m"
+        case .white:
+            colorString = "\u{001b}[47m"
+        }
+    case let .bright(bright):
+        switch bright {
+        case .black:
+            colorString = "\u{001b}[40;1m"
+        case .red:
+            colorString = "\u{001b}[41;1m"
+        case .green:
+            colorString = "\u{001b}[42;1m"
+        case .yellow:
+            colorString = "\u{001b}[43;1m"
+        case .blue:
+            colorString = "\u{001b}[44;1m"
+        case .magenta:
+            colorString = "\u{001b}[45;1m"
+        case .cyan:
+            colorString = "\u{001b}[46;1m"
+        case .white:
+            colorString = "\u{001b}[47;1m"
+        }
+    case let .int(i):
+        colorString = "\u{001b}[48;5;\(i % 256)m"
+    }
+    return colorString + str + AnsiCode.reset.rawValue
+}
+
 /// Ansi Codes
 /// This is only used as a output translation.
 /// [](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)

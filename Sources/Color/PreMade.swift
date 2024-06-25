@@ -1,35 +1,72 @@
-public func yellow(_ str: String) -> String {
-    foreground(.int(226), str)
+public enum Position {
+    case foreground
+    case background
 }
 
-public func green(_ str: String) -> String {
-    foreground(.int(40), str)
+public func yellow(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(226), position)
 }
 
-public func blue(_ str: String) -> String {
-    foreground(.int(27), str)
+public func green(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(40), position)
 }
 
-public func pink(_ str: String) -> String {
-    foreground(.int(201), str)
+public func blue(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(27), position)
 }
 
-public func red(_ str: String) -> String {
-    foreground(.int(196), str)
+public func pink(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(201), position)
 }
 
-public func orange(_ str: String) -> String {
-    foreground(.int(202), str)
+public func red(_ str: String, _ position: Position = .foreground) -> AnsiString
+{
+    wrap(str, .int(196), position)
 }
 
-public func purple(_ str: String) -> String {
-    foreground(.int(129), str)
+public func orange(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(202), position)
 }
 
-public func white(_ str: String) -> String {
-    foreground(.int(15), str)
+public func purple(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(129), position)
 }
 
-public func teal(_ str: String) -> String {
-    foreground(.int(14), str)
+public func white(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(231), position)
+}
+
+public func black(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(232), position)
+}
+
+public func teal(_ str: String, _ position: Position = .foreground)
+    -> AnsiString
+{
+    wrap(str, .int(14), position)
+}
+
+func wrap(_ str: String, _ color: Color, _ position: Position) -> AnsiString {
+    switch position {
+    case .foreground:
+        return foreground(color, str)
+    case .background:
+        return background(color, str)
+    }
 }
