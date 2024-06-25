@@ -1,4 +1,4 @@
-public typealias AnsiString = String
+public typealias ANSIString = String
 
 public enum Color {
     case basic(Basic)
@@ -18,7 +18,7 @@ public enum Color {
     }
 }
 
-public func foreground(_ color: Color, _ str: String) -> AnsiString {
+public func foreground(_ color: Color, _ str: String) -> ANSIString {
     // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
     let colorString: String
     switch color {
@@ -66,7 +66,7 @@ public func foreground(_ color: Color, _ str: String) -> AnsiString {
     return colorString + str + AnsiCode.reset.rawValue
 }
 
-public func background(_ color: Color, _ str: String) -> AnsiString {
+public func background(_ color: Color, _ str: String) -> ANSIString {
     // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
     let colorString: String
     switch color {
