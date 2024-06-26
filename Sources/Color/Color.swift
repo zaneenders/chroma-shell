@@ -1,6 +1,7 @@
 public typealias ANSIString = String
 
 public enum Color {
+    case reset
     case basic(Basic)
     case bright(Basic)
     case int(Int)
@@ -14,7 +15,6 @@ public enum Color {
         case magenta
         case cyan
         case white
-        // case reset
     }
 }
 
@@ -22,6 +22,8 @@ public func foreground(_ color: Color, _ str: String) -> ANSIString {
     // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
     let colorString: String
     switch color {
+    case .reset:
+        colorString = "\u{001b}[0m"
     case let .basic(basic):
         switch basic {
         case .black:
@@ -70,6 +72,8 @@ public func background(_ color: Color, _ str: String) -> ANSIString {
     // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
     let colorString: String
     switch color {
+    case .reset:
+        colorString = "\u{001b}[0m"
     case let .basic(basic):
         switch basic {
         case .black:
