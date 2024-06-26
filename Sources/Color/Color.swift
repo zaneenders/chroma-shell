@@ -1,6 +1,6 @@
 public typealias ANSIString = String
 
-public enum Color {
+public enum TerminalColor {
     case reset
     case basic(Basic)
     case bright(Basic)
@@ -18,7 +18,82 @@ public enum Color {
     }
 }
 
-public func foreground(_ color: Color, _ str: String) -> ANSIString {
+public enum Color {
+    case yellow
+    case blue
+    case pink
+    case red
+    case orange
+    case purple
+    case teal
+    case white
+    case green
+    case black
+    case `default`
+}
+
+public func wrap(
+    _ out: String,
+    _ foreground: Color = .default,
+    _ background: Color = .default
+) -> String {
+
+    // Apply foreground color
+    let fg: String
+    switch foreground {
+    case .default:
+        fg = defaultColor(out, .foreground)
+    case .white:
+        fg = white(out, .foreground)
+    case .green:
+        fg = green(out, .foreground)
+    case .black:
+        fg = black(out, .foreground)
+    case .blue:
+        fg = blue(out, .foreground)
+    case .orange:
+        fg = orange(out, .foreground)
+    case .pink:
+        fg = pink(out, .foreground)
+    case .purple:
+        fg = purple(out, .foreground)
+    case .red:
+        fg = red(out, .foreground)
+    case .teal:
+        fg = teal(out, .foreground)
+    case .yellow:
+        fg = yellow(out, .foreground)
+    }
+    // Apply background color
+    let bg: String
+    switch background {
+    case .default:
+        bg = defaultColor(fg, .background)
+    case .white:
+        bg = white(fg, .background)
+    case .green:
+        bg = green(fg, .background)
+    case .black:
+        bg = black(fg, .background)
+    case .blue:
+        bg = blue(fg, .background)
+    case .orange:
+        bg = orange(fg, .background)
+    case .pink:
+        bg = pink(fg, .background)
+    case .purple:
+        bg = purple(fg, .background)
+    case .red:
+        bg = red(fg, .background)
+    case .teal:
+        bg = teal(fg, .background)
+    case .yellow:
+        bg = yellow(fg, .background)
+    }
+    return bg
+}
+
+public func foreground(_ color: TerminalColor, _ str: String) -> ANSIString {
     // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
     let colorString: String
     switch color {
@@ -68,7 +143,7 @@ public func foreground(_ color: Color, _ str: String) -> ANSIString {
     return colorString + str + AnsiCode.reset.rawValue
 }
 
-public func background(_ color: Color, _ str: String) -> ANSIString {
+public func background(_ color: TerminalColor, _ str: String) -> ANSIString {
     // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
     let colorString: String
     switch color {

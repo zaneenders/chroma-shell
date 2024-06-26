@@ -68,7 +68,9 @@ public func defaultColor(_ str: String, _ position: Position = .foreground)
     wrap(str, .reset, position)
 }
 
-func wrap(_ str: String, _ color: Color, _ position: Position) -> ANSIString {
+func wrap(_ str: String, _ color: TerminalColor, _ position: Position)
+    -> ANSIString
+{
     switch position {
     case .foreground:
         return foreground(color, str)
