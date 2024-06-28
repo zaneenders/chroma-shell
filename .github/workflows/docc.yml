@@ -23,14 +23,13 @@ jobs:
       run: |
         git fetch
         git worktree add --checkout gh-pages origin/gh-pages
-    - name: Build docs with SwiftPM using DocC
+     - name: Build ChromaShell with SwiftPM using DocC
       run: |
         swift package --allow-writing-to-directory ./gh-pages/docs \
-        generate-documentation --target Chroma \
+        generate-documentation --target ChromaShell \
         --output-path ./gh-pages/docs \
         --disable-indexing \
         --transform-for-static-hosting \
-        --include-extended-types \
         --hosting-base-path chroma-shell
  
     - name: Commit and push generated documentation
