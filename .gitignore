@@ -5,6 +5,5 @@
 # Swift Package Manger
 Package.resolved
 /.swiftpm
-/gh-pages/docs
 # Editor files
 /.vscode
