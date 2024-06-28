@@ -250,19 +250,7 @@ final class MovementTests: XCTestCase {
                             .textEntry(EntryStorage("Place Holder")),
                         ])
                 ]))
-        let r = test.apply(command: .down).0
-        // BUG current output
-        // let expected: SelectedStateNode = .group(
-        //     .entire, .horizontal,
-        //     [
-        //         .group(
-        //             .entire, .vertical,
-        //             [
-        //                 .button("0", {}),
-        //                 .text(""),
-        //                 .textEntry(EntryStorage("Place Holder")),
-        //             ])
-        //     ])
+        var r = test.apply(command: .down).0
         let expected: SelectedStateNode = .selected(
             .group(
                 .entire, .horizontal,
@@ -275,6 +263,10 @@ final class MovementTests: XCTestCase {
                             .textEntry(EntryStorage("Place Holder")),
                         ])
                 ]))
+        XCTAssertEqual(expected, r)
+        r = test.apply(command: .left).0
+        XCTAssertEqual(expected, r)
+        r = test.apply(command: .right).0
         XCTAssertEqual(expected, r)
     }
 }

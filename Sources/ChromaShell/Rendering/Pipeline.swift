@@ -237,7 +237,11 @@ extension SelectedStateNode {
                 }
             case .entire:
                 // .entire can't have a selected node below it so just return as normal
-                return self
+                if youWereSelected {
+                    return .selected(self)
+                } else {
+                    return self
+                }
             }
         }
     }
@@ -280,7 +284,11 @@ extension SelectedStateNode {
                 }
             case .entire:
                 // .entire can't have a selected node below it so just return as normal
-                return self
+                if youWereSelected {
+                    return .selected(self)
+                } else {
+                    return self
+                }
             }
         }
     }
@@ -323,7 +331,11 @@ extension SelectedStateNode {
                 }
             case .entire:
                 // .entire can't have a selected node below it so just return as normal
-                return self
+                if youWereSelected {
+                    return .selected(self)
+                } else {
+                    return self
+                }
             }
         }
     }
@@ -366,7 +378,11 @@ extension SelectedStateNode {
                 }
             case .entire:
                 // .entire can't have a selected node below it so just return as normal
-                return self
+                if youWereSelected {
+                    return .selected(self)
+                } else {
+                    return self
+                }
             }
         }
     }
