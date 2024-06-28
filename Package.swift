@@ -3,33 +3,67 @@ import PackageDescription
 
 let package = Package(
     name: "chroma-shell",
+    platforms: [
+        .macOS("14.0")
+    ],
     products: [
-        .library(
-            name: "Chroma",
-            targets: ["Chroma"])
+        .library(name: "ChromaShell", targets: ["Chroma", "ChromaShell"])
     ],
     dependencies: [
-        // Used for Generating documentation
         /*
-        swift package --allow-writing-to-directory ./gh-pages/docs \
-        generate-documentation --target Chroma \
-        --output-path ./gh-pages/docs \
-        --disable-indexing \
-        --transform-for-static-hosting \
-        --include-extended-types \
-        --hosting-base-path chroma-shell
+        Below are Package dependencies but not for output. Comment out if not
+        needed for faster build times.
         */
-        // For Viewing docs locally
-        // swift package --disable-sandbox preview-documentation --target Chroma --include-extended-types
+        .package(
+            url: "https://github.com/apple/swift-format.git",
+            from: "510.1.0"),
+        // View documentation locally with the following command
+        // swift package --disable-sandbox preview-documentation --target ChromaShell
+        // swift package --disable-sandbox preview-documentation --target Chroma
         .package(
             url: "https://github.com/apple/swift-docc-plugin",
-            from: "1.3.0")
+            from: "1.3.0"),
     ],
     targets: [
+        .executableTarget(
+            name: "TestChromaClient",
+            dependencies: ["ChromaShell"],
+            swiftSettings: swiftSettings),
         .target(
-            name: "Chroma"),
+            name: "ChromaShell",
+            dependencies: ["Chroma"]),
+        .target(name: "Chroma"),
         .testTarget(
             name: "ChromaTests",
             dependencies: ["Chroma"]),
+        .testTarget(
+            name: "ChromaShellTests", dependencies: ["ChromaShell"]),
+        .plugin(
+            name: "SwiftFormatPlugin",
+            capability: .command(
+                intent: .custom(
+                    verb: "format",
+                    description: "format .scribe Swift Packages"),
+                permissions: [
+                    .writeToPackageDirectory(
+                        reason: "This command reformats swift source files")
+                ]
+            ),
+            dependencies: [
+                .product(name: "swift-format", package: "swift-format")
+            ]
+        ),
     ]
 )
+
+let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("BareSlashRegexLiterals"),
+    .enableUpcomingFeature("ConciseMagicFile"),
+    .enableUpcomingFeature("ExistentialAny"),
+    .enableUpcomingFeature("ForwardTrailingClosures"),
+    .enableUpcomingFeature("ImplicitOpenExistentials"),
+    .enableUpcomingFeature("StrictConcurrency"),
+    .unsafeFlags([
+        "-warn-concurrency", "-enable-actor-data-race-checks",
+    ]),
+]
