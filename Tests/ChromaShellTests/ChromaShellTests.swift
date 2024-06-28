@@ -21,8 +21,8 @@ struct TestBlock: Block {
 
 final class ChromaShellTests: XCTestCase {
 
-    /// Test if the ASCIIFrame foreground and background reset strings are being applied
-    func testASCIIFrameDefaults() async throws {
+    /// Test if the ChromaFrame foreground and background reset strings are being applied
+    func testChromaFrameDefaults() async throws {
         let text = "Zane Was Here"
         let r = ChromaFrame(text).asciiView
         let reset = "\u{001b}[0m"

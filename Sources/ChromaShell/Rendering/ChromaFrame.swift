@@ -37,7 +37,7 @@ public struct ChromaFrame {
         self.contents = wrap(out, foreground, background)
     }
 
-    /// provides an ``ANSIString`` view of the ``ASCIIFrame``
+    /// provides an ANSIString view of the ``ChromaFrame``
     public var asciiView: String {
         // Why does DocC not see this type
         contents
@@ -46,7 +46,7 @@ public struct ChromaFrame {
 
 extension ChromaFrame {
 
-    /// Draws this ASCIIFrame's ASCIIString to the terminal clearing the screen
+    /// Draws this ChromaFrame's ASCIIString to the terminal clearing the screen
     /// before hand.
     func render() {
         Terminal.write(frame: asciiView)
