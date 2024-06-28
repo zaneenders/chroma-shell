@@ -1,6 +1,8 @@
 name: DocC GitHub action
 on:
   push:
+    branches:
+      - main
  
 concurrency:
   group: "pages"

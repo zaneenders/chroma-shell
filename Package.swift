@@ -21,7 +21,7 @@ let package = Package(
         // swift package --disable-sandbox preview-documentation --target ChromaShell
         // swift package --disable-sandbox preview-documentation --target Chroma
         .package(
-            url: "https://github.com/apple/swift-docc-plugin",
+            url: "https://github.com/apple/swift-docc-plugin.git",
             from: "1.3.0"),
     ],
     targets: [
