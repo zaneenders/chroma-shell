@@ -11,3 +11,5 @@ Add Chroma Shell to your swift package to give it a try
 
 ## Features
 [x] Basic ascii color functions
+
+## [Documentation](https://zaneenders.github.io/chroma-shell/documentation/chromashell/)
