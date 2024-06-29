@@ -30,7 +30,6 @@ struct SwiftFormatPlugin: CommandPlugin {
 
         var toFormat = Set<String>()
 
-        // Target files
         for target in context.package.targets {
             toFormat.insert("\(target.directory)")
         }
@@ -52,15 +51,10 @@ struct SwiftFormatPlugin: CommandPlugin {
             print("formatting: \(p)")
         }
         process.waitUntilExit()
-
-        // Check whether the subprocess invocation was successful.
         if !(process.terminationReason == .exit
             && process.terminationStatus == 0)
         {
-            let problem: String =
-                "\(process.terminationReason):\(process.terminationStatus)"
-            Diagnostics.error(
-                "swift-format invocation failed: \(problem)")
+            fatalError("\(process.terminationReason):\(process.terminationStatus)")
         }
     }
 }
