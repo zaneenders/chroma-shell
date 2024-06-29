@@ -110,19 +110,19 @@ extension Terminal {
     }
 
     static var restCode: String {
-        AnsiCode.Cursor.show.rawValue
-            + AnsiCode.Cursor.Style.Block.blinking.rawValue
-            + AnsiCode.home.rawValue
+        AnsiEscapeCode.Cursor.show.rawValue
+            + AnsiEscapeCode.Cursor.Style.Block.blinking.rawValue
+            + AnsiEscapeCode.home.rawValue
     }
 
     static var setupCode: String {
-        AnsiCode.Cursor.hide.rawValue + clearCode
+        AnsiEscapeCode.Cursor.hide.rawValue + clearCode
     }
 
     static var clearCode: String {
-        AnsiCode.eraseScreen.rawValue + AnsiCode.eraseSaved.rawValue
-            + AnsiCode.home.rawValue
-            + AnsiCode.Cursor.Style.Block.blinking.rawValue
+        AnsiEscapeCode.eraseScreen.rawValue + AnsiEscapeCode.eraseSaved.rawValue
+            + AnsiEscapeCode.home.rawValue
+            + AnsiEscapeCode.Cursor.Style.Block.blinking.rawValue
     }
 
 }

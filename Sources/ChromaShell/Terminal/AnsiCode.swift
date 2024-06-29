@@ -1,6 +1,6 @@
 /// Ansi Codes
 /// This is only used as a output translation.
-enum AnsiCode: String {
+enum AnsiEscapeCode: String {
 
     case esc = "\u{001b}["
     case reset = "\u{001b}[0m"

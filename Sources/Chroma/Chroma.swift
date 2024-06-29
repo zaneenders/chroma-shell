@@ -140,7 +140,7 @@ public func foreground(_ color: TerminalColor, _ str: String) -> ANSIString {
     case let .int(i):
         colorString = "\u{001b}[38;5;\(i % 256)m"
     }
-    return colorString + str + AnsiCode.reset.rawValue
+    return colorString + str + AnsiEscapeCode.reset.rawValue
 }
 
 public func background(_ color: TerminalColor, _ str: String) -> ANSIString {
@@ -190,14 +190,14 @@ public func background(_ color: TerminalColor, _ str: String) -> ANSIString {
     case let .int(i):
         colorString = "\u{001b}[48;5;\(i % 256)m"
     }
-    return colorString + str + AnsiCode.reset.rawValue
+    return colorString + str + AnsiEscapeCode.reset.rawValue
 }
 
 /// Ansi Codes
 /// This is only used as a output translation.
 /// [](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)
 //!!!: Can we turn this into a DSL
-enum AnsiCode: String {
+enum AnsiEscapeCode: String {
 
     case esc = "\u{001b}["
     case reset = "\u{001b}[0m"
