@@ -9,6 +9,8 @@ extension Text {
     }
 }
 
+/// Extends the String type to make writing declarative code easier and try to 
+/// require less type annotations.
 extension String: Block {
     public var component: some Block {
         Text(self)
