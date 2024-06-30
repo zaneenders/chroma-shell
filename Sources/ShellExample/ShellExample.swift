@@ -1,7 +1,7 @@
 import Chroma
 import ChromaShell
 import Foundation
-// Using Swift NIO as it has better async file API's right now. This should all 
+// Using Swift NIO as it has better async file API's right now. This should all
 // get replaced by Swift SubProcess.
 import NIOCore
 import _NIOFileSystem
@@ -11,7 +11,7 @@ struct ShellExample: ChromaShell {
     var main: some Block {
         // Creates a new process and writes the output to test.txt in the
         // current working directory
-        ShellCommand("echo hello",output: .file("test.txt"))
+        ShellCommand("echo hello", output: .file("test.txt"))
     }
 }
 

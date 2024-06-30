@@ -23,7 +23,7 @@ let package = Package(
         //     url: "https://github.com/apple/swift-format.git",
         //     from: "510.1.0"),
         .package(
-            name: "swift-format", path: "../../.repositories/swift-format")
+            name: "swift-format", path: "../../.repositories/swift-format"),
         // View documentation locally with the following command
         // swift package --disable-sandbox preview-documentation --target ChromaShell
         // swift package --disable-sandbox preview-documentation --target Chroma
@@ -38,7 +38,7 @@ let package = Package(
                 "ChromaShell"
             ],
             swiftSettings: swiftSettings),
-         .executableTarget(
+        .executableTarget(
             name: "ShellExample",
             dependencies: [
                 "ChromaShell",
