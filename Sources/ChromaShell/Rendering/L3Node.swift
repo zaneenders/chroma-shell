@@ -12,35 +12,35 @@ extension L3Node {
 
     /// Flattens any groups with the same orientation. This removes the very
     /// nested nature of the tuples from the parsing.
-    func _flattenSimilarGroups() -> L3Node {
+    func flattenSimilarGroups() -> L3Node {
         switch self {
         case .textEntry, .button, .style, .switchTo, .text:
             return self
         case let .selected(node):
-            let r = node._flattenSimilarGroups()
+            let r = node.flattenSimilarGroups()
             return .selected(r)
         case let .group(orientation, children):
-            return self._flattenGroup(orientation, children)
+            return self.flattenGroup(orientation, children)
         }
     }
 
     /// Looks for nested groups and adopts there children.
-    func _flattenGroup(_ orientation: GroupOrientation, _ children: [L3Node])
+    func flattenGroup(_ orientation: GroupOrientation, _ children: [L3Node])
         -> L3Node
     {
         // This might be overkill for how many times I call flatten.
         var newChildren: [L3Node] = []
         for child in children {
-            let newChild = child._flattenSimilarGroups()
+            let newChild = child.flattenSimilarGroups()
             switch newChild {
             case let .group(o, grandChildren):
                 if o == orientation {
                     // Matching orientation, merge groups
                     newChildren += grandChildren.map {
-                        $0._flattenSimilarGroups()
+                        $0.flattenSimilarGroups()
                     }
                 } else {
-                    newChildren.append(child._flattenGroup(o, grandChildren))
+                    newChildren.append(child.flattenGroup(o, grandChildren))
                 }
             default:
                 newChildren.append(child)
@@ -52,7 +52,7 @@ extension L3Node {
     /// Wraps the outer group in either a .vertical or .horizontal L3Group to
     /// trick the render into filling the screen and consuming the available
     /// area.
-    func _wrapWithGroup() -> L3Node {
+    func wrapWithGroup() -> L3Node {
         switch self {
         case .button, .switchTo, .text, .textEntry:
             return self

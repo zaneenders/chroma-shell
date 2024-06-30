@@ -32,8 +32,8 @@ final class ChromaShellTests: XCTestCase {
         let r = t.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
             .mergeArraysIntoGroups()
-            ._wrapWithGroup()
-            ._flattenSimilarGroups()
+            .wrapWithGroup()
+            .flattenSimilarGroups()
             .createPath()
             .mergeState(with: &pathCopy)
         let expected: SelectedStateNode = .selected(
