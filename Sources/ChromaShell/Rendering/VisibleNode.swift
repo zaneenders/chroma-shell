@@ -96,10 +96,11 @@ extension VisibleNode {
             }
             switch orientation {
             case .horizontal:
-                return consumeWidth(out, needed: xt, available: width)
+                return consumeWidth(
+                    out, needed: xt, available: width, height: yt)
             case .vertical:
                 return consumeHeight(
-                    out, needed: yt, available: height, width: width)
+                    out, needed: yt, available: height, width: xt)
             }
         case let .selected(child):  // Apply Style?
             let (s, c) = child.drawVisible(width, height)
@@ -130,7 +131,9 @@ private func consumeHeight(
 }
 
 /// Consumes the given width
-private func consumeWidth(_ text: String, needed: Int, available width: Int)
+private func consumeWidth(
+    _ text: String, needed: Int, available width: Int, height: Int
+)
     -> (ANSIString, Consumed)
 {
     let half = (width - needed) / 2
@@ -144,5 +147,5 @@ private func consumeWidth(_ text: String, needed: Int, available width: Int)
         bump += " "
     }
     let out = left + bump + text + right
-    return (out, Consumed(x: xt, y: 1))
+    return (out, Consumed(x: xt, y: height))
 }

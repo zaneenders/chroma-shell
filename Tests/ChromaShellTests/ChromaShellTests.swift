@@ -55,4 +55,24 @@ final class ChromaShellTests: XCTestCase {
             .drawVisible(width, height).1
         XCTAssertEqual(c, Consumed(x: width, y: height))
     }
+
+    func testVertical() async throws {
+        var pathCopy: SelectedStateNode? = nil
+        let t: some Block = Group(.vertical) {
+            "Hello"
+        }
+        // Apply passes of the pipeline.
+        let r = t.readBlockTree(.vertical)
+            .flattenTuplesAndComposed()
+            .mergeArraysIntoGroups()
+            .wrapWithGroup()
+            .flattenSimilarGroups()
+            .createPath()
+            .mergeState(with: &pathCopy)
+        let height = 24
+        let width = 80
+        let c = r.computeVisible(width, height)
+            .drawVisible(width, height).1
+        XCTAssertEqual(c, Consumed(x: width, y: height))
+    }
 }
