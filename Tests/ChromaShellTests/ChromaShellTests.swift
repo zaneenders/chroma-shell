@@ -31,9 +31,9 @@ final class ChromaShellTests: XCTestCase {
         // Apply passes of the pipeline.
         let r = t.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
-            .mergeArraysIntoGroups()
-            .wrapWithGroup()
-            .flattenSimilarGroups()
+            ._mergeArraysIntoGroups()
+            ._wrapWithGroup()
+            ._flattenSimilarGroups()
             .createPath()
             .mergeState(with: &pathCopy)
         let expected: SelectedStateNode = .selected(

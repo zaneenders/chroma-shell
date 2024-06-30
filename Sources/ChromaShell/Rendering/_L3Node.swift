@@ -1,8 +1,8 @@
 indirect enum _L3Node {
     case button(String, () -> Void)
     case group(GroupOrientation, [_L3Node])
-    case style(L3Style)
-    case switchTo(L3SwitchTo)
+    case style
+    case switchTo(String)
     case text(String)
     case selected(_L3Node)
     case textEntry(EntryStorage)

@@ -434,55 +434,6 @@ extension SelectedStateNode {
     }
 }
 
-extension L3Node {
-
-    func createPath() -> SelectedStateNode {
-        _getPath().0
-    }
-
-    /// Bool represents the path contains `.selected`
-    private func _getPath() -> (SelectedStateNode, Bool) {
-        switch self.kind {
-        case .textEntry:
-            let t = self as! L3Entry
-            return (.textEntry(t.storage), false)
-        case .button:
-            let b = self as! L3Button
-            return (.button(b.label, b.action), false)
-        case .text:
-            let t = self as! L3Text
-            return (.text(t.text), false)
-        case .group:
-            let g = self as! L3Group
-            let result = g.children.map { $0._getPath() }
-            var index: Int? = nil
-            for (i, r) in result.enumerated() {
-                if r.1 {
-                    index = i
-                }
-            }
-            if let index {
-                return (
-                    .group(.index(index), g.orientation, result.map { $0.0 }),
-                    true
-                )
-            } else {
-                return (
-                    .group(.entire, g.orientation, result.map { $0.0 }), false
-                )
-            }
-        case .selected:
-            let s = self as! L3Selected
-            let r = s.selected._getPath()
-            return (.selected(r.0), r.1 || true)
-        case .style:
-            fatalError("Node not here yet")
-        case .switchTo:
-            fatalError("Node not here yet")
-        }
-    }
-}
-
 /// Merges the lhs tree with the rhs tree. The rhs side holds the selection
 /// state so favor rhs for selection. Other wise lhs is source of truth and
 /// gets updates from user input.

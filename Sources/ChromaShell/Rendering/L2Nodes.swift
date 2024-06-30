@@ -41,45 +41,30 @@ struct L2Text: L2Node {
     let text: String
 }
 
-extension L1Node {
-    /// Walks the L1Node tree and flattens out L1Tuples and L1Composed Nodes as
-    /// L2Arrays.
-    func flattenTuplesAndComposed() -> any L2Node {
+extension L2Node {
+
+    func _mergeArraysIntoGroups() -> _L3Node {
         switch self.kind {
         case .textEntry:
-            let t = self as! L1Entry
-            return L2Entry(storage: t.storage)
+            let t = self as! L2Entry
+            return .textEntry(t.storage)
         case .array:
-            let a = self as! L1Array
-            let l1Nodes = a.nodes.map { $0.flattenTuplesAndComposed() }
-            return L2Array(nodes: l1Nodes, orientation: a.orientation)
+            let a = self as! L2Array
+            let children = a.nodes.map { $0._mergeArraysIntoGroups() }
+            return .group(a.orientation, children)
         case .button:
-            let b = self as! L1Button
-            return L2Button(label: b.label, action: b.action)
+            let b = self as! L2Button
+            return .button(b.label, b.action)
         case .group:
-            let g = self as! L1Group
-            return L2Group(
-                orientation: g.orientation,
-                wrapping: g.wrapping.flattenTuplesAndComposed())
+            let g = self as! L2Group
+            return .group(g.orientation, [g.wrapping._mergeArraysIntoGroups()])
         case .style:
             fatalError("Style not added yet")
         case .switchTo:
-            fatalError("Switch to added yet")
+            fatalError("Switch not added yet")
         case .text:
-            let t = self as! L1Text
-            return L2Text(text: t.text)
-        case .composed:
-            let c = self as! L1Composed
-            return L2Array(
-                nodes: [c.wrapping.flattenTuplesAndComposed()],
-                orientation: c.orientation)
-        case .tuple:
-            let t = self as! L1Tuple
-            return L2Array(
-                nodes: [
-                    t.first.flattenTuplesAndComposed(),
-                    t.second.flattenTuplesAndComposed(),
-                ], orientation: t.orientation)
+            let t = self as! L2Text
+            return .text(t.text)
         }
     }
 }
