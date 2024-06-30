@@ -5,7 +5,7 @@ extension Block {
         let size = Terminal.size()
         let ascii = self.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
-            ._mergeArraysIntoGroups()
+            .mergeArraysIntoGroups()
             ._wrapWithGroup()
             ._flattenSimilarGroups()
             .createPath()

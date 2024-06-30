@@ -31,7 +31,7 @@ final class ChromaShellTests: XCTestCase {
         // Apply passes of the pipeline.
         let r = t.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
-            ._mergeArraysIntoGroups()
+            .mergeArraysIntoGroups()
             ._wrapWithGroup()
             ._flattenSimilarGroups()
             .createPath()
