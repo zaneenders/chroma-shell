@@ -2,23 +2,6 @@ import XCTest
 
 @testable import ChromaShell
 
-struct TestBlock: Block {
-
-    @State var counter = 0
-    var component: some Block {
-        // TODO fix horizontal rendering bug here
-        Group(.horizontal) {
-            "Hello"
-            " "
-            "World"
-        }
-        Button("\(counter)") {
-            counter += 1
-        }
-        TextEntry("Place Holder")
-    }
-}
-
 final class ChromaShellTests: XCTestCase {
 
     /// Test if the ChromaFrame foreground and background reset strings are being applied
@@ -36,5 +19,40 @@ final class ChromaShellTests: XCTestCase {
             .group(.entire, .horizontal, [.button("0", {})]))
         XCTAssertEqual(test, test.testDescription)
         */
+    }
+
+    func testHorizontal() async throws {
+        var pathCopy: SelectedStateNode? = nil
+        let t: some Block = Group(.horizontal) {
+            "Hello"
+            " "
+            "World"
+        }
+        // Apply passes of the pipeline.
+        let r = t.readBlockTree(.vertical)
+            .flattenTuplesAndComposed()
+            .mergeArraysIntoGroups()
+            .wrapWithGroup()
+            .flattenSimilarGroups()
+            .createPath()
+            .mergeState(with: &pathCopy)
+        let expected: SelectedStateNode = .selected(
+            .group(
+                .entire, .vertical,
+                [
+                    .group(
+                        .entire, .horizontal,
+                        [
+                            .text("Hello"),
+                            .text(" "),
+                            .text("World"),
+                        ])
+                ]))
+        let height = 24
+        let width = 80
+        XCTAssertEqual(r, expected)
+        let c = r.computeVisible(width, height)
+            .drawVisible(width, height).1
+        XCTAssertEqual(c, Consumed(x: width, y: height))
     }
 }

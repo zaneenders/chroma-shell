@@ -54,7 +54,8 @@ struct SwiftFormatPlugin: CommandPlugin {
         if !(process.terminationReason == .exit
             && process.terminationStatus == 0)
         {
-            fatalError("\(process.terminationReason):\(process.terminationStatus)")
+            fatalError(
+                "\(process.terminationReason):\(process.terminationStatus)")
         }
     }
 }

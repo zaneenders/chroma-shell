@@ -42,7 +42,7 @@ public struct ChromaFrame {
 
 extension ChromaFrame {
 
-    /// Draws this ``ChromaFrame`` by sending ``AnsiEscapeCode`` to the 
+    /// Draws this ``ChromaFrame`` by sending ``AnsiEscapeCode`` to the
     /// terminal. Clearing the screen before hand.
     func render() {
         Terminal.write(frame: asciiView)
