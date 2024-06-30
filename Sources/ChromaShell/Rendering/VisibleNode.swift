@@ -83,21 +83,24 @@ extension VisibleNode {
                 Hmm we need to add all the widths together then consume the renaming space?
                 */
                 case .horizontal:
-                    var (s, c) = child.drawVisible(width - xt, height)
-                    (s, c) = consumeHeight(
-                        s, needed: c.y, available: height, width: c.x)
+                    let (s, c) = child.drawVisible(width - xt, height)
                     yt = c.y
                     xt += c.x
                     out += s
                 case .vertical:
-                    var (s, c) = child.drawVisible(width, height - yt)
-                    (s, c) = consumeWidth(s, needed: c.x, available: width)
+                    let (s, c) = child.drawVisible(width, height - yt)
                     yt += c.y
                     xt = c.x
                     out += s
                 }
             }
-            return (out, Consumed(x: xt, y: yt))
+            switch orientation {
+            case .horizontal:
+                return consumeWidth(out, needed: xt, available: width)
+            case .vertical:
+                return consumeHeight(
+                    out, needed: yt, available: height, width: width)
+            }
         case let .selected(child):  // Apply Style?
             let (s, c) = child.drawVisible(width, height)
             return (wrap(s, .black, .pink), c)
