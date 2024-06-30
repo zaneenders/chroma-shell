@@ -41,6 +41,31 @@ struct L3Text: L3Node {
 }
 
 extension L2Node {
+
+    func _mergeArraysIntoGroups() -> _L3Node {
+        switch self.kind {
+        case .textEntry:
+            let t = self as! L2Entry
+            return .textEntry(t.storage)
+        case .array:
+            let a = self as! L2Array
+            let children = a.nodes.map { $0._mergeArraysIntoGroups() }
+            return .group(a.orientation, children)
+        case .button:
+            let b = self as! L2Button
+            return .button(b.label, b.action)
+        case .group:
+            let g = self as! L2Group
+            return .group(g.orientation, [g.wrapping._mergeArraysIntoGroups()])
+        case .style:
+            fatalError("Style not added yet")
+        case .switchTo:
+            fatalError("Switch not added yet")
+        case .text:
+            let t = self as! L2Text
+            return .text(t.text)
+        }
+    }
     /// Walks the L2Node tree and flattens L2Groups and L2Arrays into L3Group
     func mergeArraysIntoGroups() -> any L3Node {
         switch self.kind {
@@ -78,10 +103,10 @@ extension L3Node {
             return .selected(t.newNodes())
         case .textEntry:
             let t = self as! L3Entry
-            return .textEntry(L3Entry(storage: t.storage))
+            return .textEntry(t.storage)
         case .button:
             let b = self as! L3Button
-            return .button(L3Button(label: b.label, action: b.action))
+            return .button(b.label, b.action)
         case .group:
             let g = self as! L3Group
             let children = g.children.map { $0.newNodes() }
@@ -92,7 +117,7 @@ extension L3Node {
             fatalError("Switch not added yet")
         case .text:
             let t = self as! L3Text
-            return .text(L3Text(text: t.text))
+            return .text(t.text)
         }
     }
 }
@@ -145,6 +170,7 @@ extension L3Node {
     /// Wraps the outer group in either a .vertical or .horizontal L3Group to
     /// trick the render into filling the screen and consuming the available
     /// area.
+
     func wrapWithGroup() -> any L3Node {
         switch self.kind {
         case .button, .switchTo, .text, .textEntry:
