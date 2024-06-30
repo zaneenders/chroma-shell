@@ -8,6 +8,7 @@ extension Block {
             .mergeArraysIntoGroups()
             .wrapWithGroup()
             .flattenSimilarGroups()
+            .newNodes()
             .createPath()
             .mergeState(with: &pathCopy)
             .computeVisible(size.x, size.y)

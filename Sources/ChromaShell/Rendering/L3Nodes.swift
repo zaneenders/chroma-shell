@@ -71,6 +71,33 @@ extension L2Node {
 }
 
 extension L3Node {
+    func newNodes() -> _L3Node {
+        switch self.kind {
+        case .selected:
+            let t = self as! L3Selected
+            return .selected(t.newNodes())
+        case .textEntry:
+            let t = self as! L3Entry
+            return .textEntry(L3Entry(storage: t.storage))
+        case .button:
+            let b = self as! L3Button
+            return .button(L3Button(label: b.label, action: b.action))
+        case .group:
+            let g = self as! L3Group
+            let children = g.children.map { $0.newNodes() }
+            return .group(g.orientation, children)
+        case .style:
+            fatalError("Style not added yet")
+        case .switchTo:
+            fatalError("Switch not added yet")
+        case .text:
+            let t = self as! L3Text
+            return .text(L3Text(text: t.text))
+        }
+    }
+}
+
+extension L3Node {
     /// Flattens any groups with the same orientation. This removes the very
     /// nested nature of the tuples from the parsing.
     func flattenSimilarGroups() -> any L3Node {
