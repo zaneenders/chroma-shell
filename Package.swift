@@ -14,7 +14,7 @@ let package = Package(
         //     url: "https://github.com/apple/swift-nio.git",
         //     from: "2.66.0"),
 
-        // .package(name: "swift-nio", path: "../../.repositories/swift-nio"),
+        .package(name: "swift-nio", path: "../../.repositories/swift-nio"),
         /*
         Below are Package dependencies but not for output. Comment out if not
         needed for faster build times.
@@ -36,6 +36,13 @@ let package = Package(
             name: "TestChromaClient",
             dependencies: [
                 "ChromaShell"
+            ],
+            swiftSettings: swiftSettings),
+         .executableTarget(
+            name: "ShellExample",
+            dependencies: [
+                "ChromaShell",
+                .product(name: "_NIOFileSystem", package: "swift-nio"),
             ],
             swiftSettings: swiftSettings),
         .target(
