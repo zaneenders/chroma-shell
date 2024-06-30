@@ -10,24 +10,33 @@ let package = Package(
         .library(name: "ChromaShell", targets: ["Chroma", "ChromaShell"])
     ],
     dependencies: [
+        // .package(
+        //     url: "https://github.com/apple/swift-nio.git",
+        //     from: "2.66.0"),
+
+        // .package(name: "swift-nio", path: "../../.repositories/swift-nio"),
         /*
         Below are Package dependencies but not for output. Comment out if not
         needed for faster build times.
         */
+        // .package(
+        //     url: "https://github.com/apple/swift-format.git",
+        //     from: "510.1.0"),
         .package(
-            url: "https://github.com/apple/swift-format.git",
-            from: "510.1.0"),
+            name: "swift-format", path: "../../.repositories/swift-format")
         // View documentation locally with the following command
         // swift package --disable-sandbox preview-documentation --target ChromaShell
         // swift package --disable-sandbox preview-documentation --target Chroma
-        .package(
-            url: "https://github.com/apple/swift-docc-plugin.git",
-            from: "1.3.0"),
+        // .package(
+        //     url: "https://github.com/apple/swift-docc-plugin.git",
+        //     from: "1.3.0"),
     ],
     targets: [
         .executableTarget(
             name: "TestChromaClient",
-            dependencies: ["ChromaShell"],
+            dependencies: [
+                "ChromaShell"
+            ],
             swiftSettings: swiftSettings),
         .target(
             name: "ChromaShell",
