@@ -3,7 +3,7 @@ extension Block {
     func pipeline(_ path: SelectedStateNode?) -> SelectedStateNode {
         var pathCopy = path
         let size = Terminal.size()
-        let ascii = self.readBlockTree()
+        let ascii = self.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
             .mergeArraysIntoGroups()
             .wrapWithGroup()

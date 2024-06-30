@@ -16,9 +16,9 @@ struct L2Entry: L2Node {
     let storage: EntryStorage
 }
 struct L2Array: L2Node {
-    // TODO let orientation: GroupType
     let kind: L2NodeKind = .array
     let nodes: [any L2Node]
+    let orientation: GroupOrientation
 }
 struct L2Button: L2Node {
     let kind: L2NodeKind = .button
@@ -52,7 +52,7 @@ extension L1Node {
         case .array:
             let a = self as! L1Array
             let l1Nodes = a.nodes.map { $0.flattenTuplesAndComposed() }
-            return L2Array(nodes: l1Nodes)
+            return L2Array(nodes: l1Nodes, orientation: a.orientation)
         case .button:
             let b = self as! L1Button
             return L2Button(label: b.label, action: b.action)
@@ -70,13 +70,16 @@ extension L1Node {
             return L2Text(text: t.text)
         case .composed:
             let c = self as! L1Composed
-            return L2Array(nodes: [c.wrapping.flattenTuplesAndComposed()])
+            return L2Array(
+                nodes: [c.wrapping.flattenTuplesAndComposed()],
+                orientation: c.orientation)
         case .tuple:
             let t = self as! L1Tuple
-            return L2Array(nodes: [
-                t.first.flattenTuplesAndComposed(),
-                t.second.flattenTuplesAndComposed(),
-            ])
+            return L2Array(
+                nodes: [
+                    t.first.flattenTuplesAndComposed(),
+                    t.second.flattenTuplesAndComposed(),
+                ], orientation: t.orientation)
         }
     }
 }

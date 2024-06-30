@@ -28,7 +28,7 @@ final class ChromaShellTests: XCTestCase {
             " "
             "World"
         }
-        let r = t.readBlockTree()
+        let r = t.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
             .mergeArraysIntoGroups()
             .wrapWithGroup()
@@ -37,7 +37,7 @@ final class ChromaShellTests: XCTestCase {
             .mergeState(with: &pathCopy)
 
         /*
-        This is roughly what it should be after orientation is passed down 
+        This is roughly what it should be after orientation is passed down
         correctly and sub groups and tuples are merged.
         */
         let expected: SelectedStateNode = .selected(

@@ -17,6 +17,7 @@ protocol L1Node {
 struct L1Array: L1Node {
     let kind: L1NodeKind = .array
     let nodes: [any L1Node]
+    let orientation: GroupOrientation
 }
 struct L1Entry: L1Node {
     let kind: L1NodeKind = .textEntry
@@ -46,16 +47,18 @@ struct L1Tuple: L1Node {
     let kind: L1NodeKind = .tuple
     let first: any L1Node
     let second: any L1Node
+    let orientation: GroupOrientation
 }
 struct L1Composed: L1Node {
     let kind: L1NodeKind = .composed
     let wrapping: any L1Node
+    let orientation: GroupOrientation
 }
 
 extension Block {
     /// walks the Block tree and converts all nodes to there L1Node counter
     /// part. No information is lost here only created.
-    func readBlockTree() -> any L1Node {
+    func readBlockTree(_ orientation: GroupOrientation) -> any L1Node {
         if let builtin = self as? any BuiltinBlock {
             switch builtin.type {
             case .textEntry:
@@ -63,15 +66,16 @@ extension Block {
                 return L1Entry(storage: t.storage)
             case .array:
                 let a = builtin as! any ArrayBlocks
-                let l1Nodes = a._blocks.map { $0.readBlockTree() }
-                return L1Array(nodes: l1Nodes)
+                let l1Nodes = a._blocks.map { $0.readBlockTree(orientation) }
+                return L1Array(nodes: l1Nodes, orientation: orientation)
             case .button:
                 let b = builtin as! Button
                 return L1Button(label: b.label, action: b.action)
-            case let .group(o):
+            case let .group(gOrientation):
                 let g = builtin as! Group
                 return L1Group(
-                    orientation: o, wrapping: g.wrapped.readBlockTree())
+                    orientation: gOrientation,
+                    wrapping: g.wrapped.readBlockTree(gOrientation))
             case .style:
                 fatalError("Style not added yet")
             case .switchTo:
@@ -83,11 +87,14 @@ extension Block {
             case .tuple:
                 let t = builtin as! TupleBlock
                 return L1Tuple(
-                    first: t.first.readBlockTree(),
-                    second: t.second.readBlockTree())
+                    first: t.first.readBlockTree(orientation),
+                    second: t.second.readBlockTree(orientation),
+                    orientation: orientation)
             }
         } else {
-            return L1Composed(wrapping: self.component.readBlockTree())
+            return L1Composed(
+                wrapping: self.component.readBlockTree(orientation),
+                orientation: orientation)
         }
     }
 }

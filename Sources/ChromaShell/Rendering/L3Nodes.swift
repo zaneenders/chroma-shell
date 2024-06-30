@@ -50,7 +50,7 @@ extension L2Node {
         case .array:
             let a = self as! L2Array
             let children = a.nodes.map { $0.mergeArraysIntoGroups() }
-            return L3Group(orientation: .vertical, children: children)
+            return L3Group(orientation: a.orientation, children: children)
         case .button:
             let b = self as! L2Button
             return L3Button(label: b.label, action: b.action)
