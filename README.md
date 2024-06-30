@@ -33,3 +33,8 @@ struct Scribe: ChromaShell {
 ## [Documentation](https://zaneenders.github.io/chroma-shell/documentation/chromashell/)
 
 Checkout the docs for more details about the project.
+
+## More Examples
+
+[Shell Example](Sources/ShellExample/ShellExample.swift)
+A simple example of running a shell command in the background
