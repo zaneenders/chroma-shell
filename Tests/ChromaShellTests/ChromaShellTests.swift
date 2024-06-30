@@ -2,23 +2,6 @@ import XCTest
 
 @testable import ChromaShell
 
-struct TestBlock: Block {
-
-    @State var counter = 0
-    var component: some Block {
-        // TODO fix horizontal rendering bug here
-        Group(.horizontal) {
-            "Hello"
-            " "
-            "World"
-        }
-        Button("\(counter)") {
-            counter += 1
-        }
-        TextEntry("Place Holder")
-    }
-}
-
 final class ChromaShellTests: XCTestCase {
 
     /// Test if the ChromaFrame foreground and background reset strings are being applied
@@ -36,5 +19,40 @@ final class ChromaShellTests: XCTestCase {
             .group(.entire, .horizontal, [.button("0", {})]))
         XCTAssertEqual(test, test.testDescription)
         */
+    }
+
+    func testHorizontal() async throws {
+        var pathCopy: SelectedStateNode? = nil
+        let t: some Block = Group(.horizontal) {
+            "Hello"
+            " "
+            "World"
+        }
+        let r = t.readBlockTree()
+            .flattenTuplesAndComposed()
+            .mergeArraysIntoGroups()
+            .wrapWithGroup()
+            .flattenSimilarGroups()
+            .createPath()
+            .mergeState(with: &pathCopy)
+
+        /*
+        This is roughly what it should be after orientation is passed down 
+        correctly and sub groups and tuples are merged.
+        */
+        let expected: SelectedStateNode = .selected(
+            .group(
+                .entire, .vertical,
+                [
+                    .group(
+                        .entire, .horizontal,
+                        [
+                            .text("Hello"),
+                            .text(" "),
+                            .text("World"),
+                        ])
+                ]))
+
+        XCTAssertEqual(r, expected)
     }
 }
