@@ -43,7 +43,7 @@ struct L2Text: L2Node {
 
 extension L2Node {
 
-    func _mergeArraysIntoGroups() -> _L3Node {
+    func _mergeArraysIntoGroups() -> L3Node {
         switch self.kind {
         case .textEntry:
             let t = self as! L2Entry

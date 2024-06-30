@@ -1,18 +1,18 @@
-indirect enum _L3Node {
+indirect enum L3Node {
     case button(String, () -> Void)
-    case group(GroupOrientation, [_L3Node])
+    case group(GroupOrientation, [L3Node])
     case style
     case switchTo(String)
     case text(String)
-    case selected(_L3Node)
+    case selected(L3Node)
     case textEntry(EntryStorage)
 }
 
-extension _L3Node {
+extension L3Node {
 
     /// Flattens any groups with the same orientation. This removes the very
     /// nested nature of the tuples from the parsing.
-    func _flattenSimilarGroups() -> _L3Node {
+    func _flattenSimilarGroups() -> L3Node {
         switch self {
         case .textEntry, .button, .style, .switchTo, .text:
             return self
@@ -25,11 +25,11 @@ extension _L3Node {
     }
 
     /// Looks for nested groups and adopts there children.
-    func _flattenGroup(_ orientation: GroupOrientation, _ children: [_L3Node])
-        -> _L3Node
+    func _flattenGroup(_ orientation: GroupOrientation, _ children: [L3Node])
+        -> L3Node
     {
         // This might be overkill for how many times I call flatten.
-        var newChildren: [_L3Node] = []
+        var newChildren: [L3Node] = []
         for child in children {
             let newChild = child._flattenSimilarGroups()
             switch newChild {
@@ -52,7 +52,7 @@ extension _L3Node {
     /// Wraps the outer group in either a .vertical or .horizontal L3Group to
     /// trick the render into filling the screen and consuming the available
     /// area.
-    func _wrapWithGroup() -> _L3Node {
+    func _wrapWithGroup() -> L3Node {
         switch self {
         case .button, .switchTo, .text, .textEntry:
             return self
