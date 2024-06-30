@@ -57,7 +57,7 @@ extension VisibleNode {
     }
 }
 
-struct Consumed {
+struct Consumed: Equatable {
     let x: Int
     let y: Int
 }
@@ -79,6 +79,9 @@ extension VisibleNode {
             for child in children {
                 // TODO check if we can add
                 switch orientation {
+                /*
+                Hmm we need to add all the widths together then consume the renaming space?
+                */
                 case .horizontal:
                     var (s, c) = child.drawVisible(width - xt, height)
                     (s, c) = consumeHeight(

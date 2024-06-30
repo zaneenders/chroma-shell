@@ -28,6 +28,7 @@ final class ChromaShellTests: XCTestCase {
             " "
             "World"
         }
+        // Apply passes of the pipeline.
         let r = t.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
             .mergeArraysIntoGroups()
@@ -35,11 +36,6 @@ final class ChromaShellTests: XCTestCase {
             .flattenSimilarGroups()
             .createPath()
             .mergeState(with: &pathCopy)
-
-        /*
-        This is roughly what it should be after orientation is passed down
-        correctly and sub groups and tuples are merged.
-        */
         let expected: SelectedStateNode = .selected(
             .group(
                 .entire, .vertical,
@@ -52,7 +48,11 @@ final class ChromaShellTests: XCTestCase {
                             .text("World"),
                         ])
                 ]))
-
+        let height = 24
+        let width = 80
         XCTAssertEqual(r, expected)
+        let c = r.computeVisible(width, height)
+            .drawVisible(width, height).1
+        XCTAssertEqual(c, Consumed(x: width, y: height))
     }
 }
