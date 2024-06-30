@@ -40,10 +40,10 @@ extension L3Node {
                         $0.flattenSimilarGroups()
                     }
                 } else {
-                    newChildren.append(child.flattenGroup(o, grandChildren))
+                    newChildren.append(newChild.flattenGroup(o, grandChildren))
                 }
             default:
-                newChildren.append(child)
+                newChildren.append(newChild)
             }
         }
         return .group(orientation, newChildren)

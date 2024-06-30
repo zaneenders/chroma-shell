@@ -136,6 +136,9 @@ private func consumeWidth(
 )
     -> (ANSIString, Consumed)
 {
+    /*
+    BUG This only wraps one row not multiple. Maybe I need some notion of Row.
+    */
     let half = (width - needed) / 2
     let spacing = Array(repeating: " ", count: half).joined()
     let left = spacing

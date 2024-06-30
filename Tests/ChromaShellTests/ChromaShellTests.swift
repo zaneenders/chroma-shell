@@ -57,6 +57,7 @@ final class ChromaShellTests: XCTestCase {
     }
 
     func testVertical() async throws {
+        // TODO fix consumeWidth to append extra width on each row.
         var pathCopy: SelectedStateNode? = nil
         let t: some Block = Group(.vertical) {
             "Hello"
