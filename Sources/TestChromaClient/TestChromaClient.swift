@@ -4,11 +4,7 @@ import Observation
 @main
 struct TestChromaClient: ChromaShell {
     var main: some Block {
-        Group(.horizontal) {
-            "Hello"
-            " "
-            "World"
-        }
+        TestBlock()
     }
 }
 

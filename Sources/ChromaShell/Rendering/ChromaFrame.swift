@@ -1,5 +1,3 @@
-import Chroma
-
 /// Contains and represents the information needed to render one frame to the current Terminal.
 public struct ChromaFrame {
 
@@ -10,7 +8,7 @@ public struct ChromaFrame {
         _ foreground: Color = .default,
         _ background: Color = .default
     ) {
-        self.contents = wrap(raw, foreground, background)
+        self.contents = _wrap(raw, foreground, background)
     }
 
     /// Creates a frame of the current size filled with the given char
@@ -31,7 +29,7 @@ public struct ChromaFrame {
                 out += "\n"
             }
         }
-        self.contents = wrap(out, foreground, background)
+        self.contents = _wrap(out, foreground, background)
     }
 
     /// provides an ``ANSIString`` view of the ``ChromaFrame``

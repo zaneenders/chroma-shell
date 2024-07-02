@@ -7,7 +7,7 @@ let package = Package(
         .macOS("14.0")
     ],
     products: [
-        .library(name: "ChromaShell", targets: ["Chroma", "ChromaShell"])
+        .library(name: "ChromaShell", targets: ["ChromaShell"])
     ],
     dependencies: [
         .package(
@@ -42,12 +42,7 @@ let package = Package(
             ],
             swiftSettings: swiftSettings),
         .target(
-            name: "ChromaShell",
-            dependencies: ["Chroma"]),
-        .target(name: "Chroma"),
-        .testTarget(
-            name: "ChromaTests",
-            dependencies: ["Chroma"]),
+            name: "ChromaShell"),
         .testTarget(
             name: "ChromaShellTests", dependencies: ["ChromaShell"]),
         .plugin(

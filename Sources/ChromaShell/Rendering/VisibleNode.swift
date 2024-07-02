@@ -1,5 +1,3 @@
-import Chroma
-
 indirect enum VisibleNode {
     // NOTE Maybe replace with .style rendering doesn't care whats selected
     // just what and where things go
@@ -104,7 +102,7 @@ extension VisibleNode {
             }
         case let .selected(child):  // Apply Style?
             let (s, c) = child.drawVisible(width, height)
-            return (wrap(s, .black, .pink), c)
+            return (_wrap(s, .black, .pink), c)
         }
     }
 }

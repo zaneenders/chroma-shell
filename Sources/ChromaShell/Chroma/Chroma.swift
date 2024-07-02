@@ -32,7 +32,7 @@ public enum Color {
     case `default`
 }
 
-public func wrap(
+public func _wrap(
     _ out: String,
     _ foreground: Color = .default,
     _ background: Color = .default
@@ -191,43 +191,4 @@ public func background(_ color: TerminalColor, _ str: String) -> ANSIString {
         colorString = "\u{001b}[48;5;\(i % 256)m"
     }
     return colorString + str + AnsiEscapeCode.reset.rawValue
-}
-
-/// Ansi Codes
-/// This is only used as a output translation.
-/// [](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)
-//!!!: Can we turn this into a DSL
-enum AnsiEscapeCode: String {
-
-    case esc = "\u{001b}["
-    case reset = "\u{001b}[0m"
-    case home = "\u{001b}[H"  // moves cursor to home position (0, 0)
-    case eraseScreen = "\u{001b}[2J"
-    case eraseSaved = "\u{001b}[3J"
-    case defaultColor = "\u{001b}[1;39m"
-    //    ESC[{line};{column}H
-    //    ESC[{line};{column}f    moves cursor to line #, column #
-    //    ESC[J    erase in display (same as ESC[0J)
-    //    ESC[0J    erase from cursor until end of screen
-    //    ESC[1J    erase from cursor to beginning of screen
-    //    ESC[2J    erase entire screen
-    //    ESC[3J    erase saved lines
-    //    ESC[K    erase in line (same as ESC[0K)
-    //    ESC[0K    erase from cursor to end of line
-    //    ESC[1K    erase start of line to the cursor
-    //    ESC[2K    erase the entire line
-
-    enum Style: String {
-        case bold = "\u{001b}[1m"
-        case underline = "\u{001b}[4m"
-        case reversed = "\u{001b}[7m"
-    }
-
-    static func foregroundColor(_ value: Int) -> String {
-        "\u{001b}[38;5;\(value)m"
-    }
-
-    static func backgroundColor(_ value: Int) -> String {
-        "\u{001b}[48;5;\(value)m"
-    }
 }
