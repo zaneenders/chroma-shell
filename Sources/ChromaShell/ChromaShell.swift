@@ -1,4 +1,3 @@
-import Chroma
 import Foundation
 
 /// A protocol to start using blocks to describe your terminal experience
