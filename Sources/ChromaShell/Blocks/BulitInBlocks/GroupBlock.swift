@@ -15,7 +15,7 @@ extension Group {
     }
 }
 
-extension GroupOrientation: Equatable {}
+extension GroupOrientation: Equatable, Codable {}
 public enum GroupOrientation {
     case vertical
     case horizontal
