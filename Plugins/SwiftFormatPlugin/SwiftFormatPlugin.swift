@@ -16,7 +16,8 @@ struct SwiftFormatPlugin: CommandPlugin {
         // Package.swift files
         let packages = context.package.directory.appending(
             subpath: "Package.swift")
-        var paths = [packages.string]
+        var paths = Set<String>()
+        paths.insert(packages.string)
         // Plugin Files
         let plugins: Path = context.package.directory.appending(
             subpath: "Plugins")
@@ -24,17 +25,13 @@ struct SwiftFormatPlugin: CommandPlugin {
             atPath: plugins.string)
         for p in plugin_paths {
             if p.contains(".swift") {
-                paths.append("Plugins/" + p)
+                paths.insert("Plugins/" + p)
             }
         }
-
-        var toFormat = Set<String>()
-
+        // Target files
         for target in context.package.targets {
-            toFormat.insert("\(target.directory)")
+            paths.insert("\(target.directory)")
         }
-
-        paths += Array(toFormat)
 
         let swiftFormatExec = URL(
             fileURLWithPath: swiftFormatTool.path.string)
@@ -59,58 +56,3 @@ struct SwiftFormatPlugin: CommandPlugin {
         }
     }
 }
-
-// Saving this to possibly remove the `.swift-format.json` file
-// Note moved to
-// Sources/SwiftFormat/API/Configuration.swift
-/*
-var config: Configuration {
-    var config = Configuration()
-    config.fileScopedDeclarationPrivacy.accessLevel = .private
-    config.indentation = .spaces(4)
-    config.indentConditionalCompilationBlocks = true
-    config.indentSwitchCaseLabels = false
-    config.lineBreakAroundMultilineExpressionChainComponents = false
-    config.lineBreakBeforeControlFlowKeywords = false
-    config.lineLength = 80
-    config.maximumBlankLines = 1
-    config.prioritizeKeepingFunctionOutputTogether = false
-    config.respectsExistingLineBreaks = true
-    config.rules["AllPublicDeclarationsHaveDocumentation"] = false
-    config.rules["AlwaysUseLowerCamelCase"] = true
-    config.rules["AmbiguousTrailingClosureOverload"] = true
-    config.rules["BeginDocumentationCommentWithOneLineSummary"] = false
-    config.rules["DoNotUseSemicolons"] = true
-    config.rules["DontRepeatTypeInStaticProperties"] = true
-    config.rules["FileScopedDeclarationPrivacy"] = true
-    config.rules["FullyIndirectEnum"] = true
-    config.rules["GroupNumericLiterals"] = true
-    config.rules["IdentifiersMustBeASCII"] = true
-    config.rules["NeverForceUnwrap"] = false
-    config.rules["NeverUseForceTry"] = false
-    config.rules["NeverUseImplicitlyUnwrappedOptionals"] = false
-    config.rules["NoAccessLevelOnExtensionDeclaration"] = true
-    config.rules["NoBlockComments"] = true
-    config.rules["NoCasesWithOnlyFallthrough"] = true
-    config.rules["NoEmptyTrailingClosureParentheses"] = true
-    config.rules["NoLabelsInCasePatterns"] = true
-    config.rules["NoLeadingUnderscores"] = false
-    config.rules["NoParensAroundConditions"] = true
-    config.rules["NoVoidReturnOnFunctionSignature"] = true
-    config.rules["OneCasePerLine"] = true
-    config.rules["OneVariableDeclarationPerLine"] = true
-    config.rules["OnlyOneTrailingClosureArgument"] = true
-    config.rules["OrderedImports"] = true
-    config.rules["ReturnVoidInsteadOfEmptyTuple"] = true
-    config.rules["UseEarlyExits"] = false
-    config.rules["UseLetInEveryBoundCaseVariable"] = true
-    config.rules["UseShorthandTypeNames"] = true
-    config.rules["UseSingleLinePropertyGetter"] = true
-    config.rules["UseSynthesizedInitializer"] = true
-    config.rules["UseTripleSlashForDocumentationComments"] = true
-    config.rules["UseWhereClausesInForLoops"] = false
-    config.rules["ValidateDocumentationComments"] = false
-    config.tabWidth = 4
-    return config
-}
-*/
