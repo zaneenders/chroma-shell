@@ -3,8 +3,6 @@ import XCTest
 
 @testable import ChromaShell
 
-// TODO remove this import just test ChromaShell
-
 final class ChromaShellTests: XCTestCase {
 
     /// Test if the ChromaFrame foreground and background reset strings are being applied
@@ -24,50 +22,32 @@ final class ChromaShellTests: XCTestCase {
         */
     }
 
-    // func testHorizontal() async throws {
-    //     let t: some Block = Group(.horizontal) {
-    //         "Hello"
-    //         " "
-    //         "World"
-    //     }
-    //     let renderer = RenderObserver(t,80,24,TestRenderer.self)
-    //     await renderer.command(.out)
-    //     let visible = await renderer.getVisible(80,24)
-    //     let expected: VisibleNode = .selected(
-    //         .group(.vertical,
-    //             [
-    //                 .group(.horizontal,
-    //                     [
-    //                         .text("Hello"),
-    //                         .text(" "),
-    //                         .text("World"),
-    //                     ])
-    //             ]))
-    //     let height = 24
-    //     let width = 80
-    //     XCTAssertEqual(visible, expected)
-    //     let c = visible.drawVisible(width, height).1
-    //     XCTAssertEqual(c, Consumed(x: width, y: height))
-    // }
+    func testHorizontal() async throws {
+        let t: some Block = Group(.horizontal) {
+            "Hello"
+            " "
+            "World"
+        }
+        let height = 24
+        let width = 80
+        let renderer = await RenderObserver(t, width, height)
+        await renderer.command(.out)
+        let visible = await renderer.current
+        let c = visible.drawVisible(width, height).1
+        XCTAssertEqual(c, Consumed(x: width, y: height))
+    }
 
-    // func testVertical() async throws {
-    //     // TODO fix consumeWidth to append extra width on each row.
-    //     var pathCopy: SelectedStateNode? = nil
-    //     let t: some Block = Group(.vertical) {
-    //         "Hello"
-    //     }
-    //     // Apply passes of the pipeline.
-    //     let r = t.readBlockTree(.vertical)
-    //         .flattenTuplesAndComposed()
-    //         .mergeArraysIntoGroups()
-    //         .wrapWithGroup()
-    //         .flattenSimilarGroups()
-    //         .createPath()
-    //         .mergeState(with: &pathCopy)
-    //     let height = 24
-    //     let width = 80
-    //     let c = r.computeVisible(width, height)
-    //         .drawVisible(width, height).1
-    //     XCTAssertEqual(c, Consumed(x: width, y: height))
-    // }
+    func testVertical() async throws {
+        // TODO fix consumeWidth to append extra width on each row.
+        let t: some Block = Group(.vertical) {
+            "Hello"
+        }
+        let height = 24
+        let width = 80
+        let renderer = await RenderObserver(t, width, height)
+        await renderer.command(.out)
+        let visible = await renderer.current
+        let c = visible.drawVisible(width, height).1
+        XCTAssertEqual(c, Consumed(x: width, y: height))
+    }
 }
