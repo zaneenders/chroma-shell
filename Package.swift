@@ -10,10 +10,9 @@ let package = Package(
         .library(name: "ChromaShell", targets: ["ChromaShell"])
     ],
     dependencies: [
-        .package(path: "../scribe"),
-        // .package(
-        //     url: "https://github.com/zaneenders/scribe.git",
-        //     branch: "main"),
+        .package(
+            url: "https://github.com/zaneenders/scribe.git",
+            branch: "main"),
         .package(
             url: "https://github.com/apple/swift-nio.git",
             from: "2.66.0"),
