@@ -1,5 +1,6 @@
 import ChromaShell
 import Observation
+import _Blocks
 
 @main
 struct TestChromaClient: ChromaShell {

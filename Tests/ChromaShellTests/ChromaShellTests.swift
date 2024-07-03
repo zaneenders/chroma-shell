@@ -1,6 +1,7 @@
 import XCTest
 
 @testable import ChromaShell
+@testable import _Blocks
 
 final class ChromaShellTests: XCTestCase {
 

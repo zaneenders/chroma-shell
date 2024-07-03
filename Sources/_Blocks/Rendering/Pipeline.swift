@@ -1,10 +1,11 @@
+import _Blocks
+
 /// The pipeline used to display the graph and apply user interaction updates.
 extension Block {
-    func pipeline(_ path: SelectedStateNode?) -> (
+    func pipeline(_ path: SelectedStateNode?, _ x: Int, _ y: Int) -> (
         SelectedStateNode, VisibleNode
     ) {
         var pathCopy = path
-        let size = Terminal.size()
         let visible = self.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
             .mergeArraysIntoGroups()
@@ -12,7 +13,7 @@ extension Block {
             .flattenSimilarGroups()
             .createPath()
             .mergeState(with: &pathCopy)
-            .computeVisible(size.x, size.y)
+            .computeVisible(x, y)
         return (pathCopy!, visible)
     }
 }

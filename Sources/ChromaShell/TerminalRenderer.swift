@@ -1,3 +1,5 @@
+import _Blocks
+
 struct TerminalRenderer: Renderer {
     let graph: VisibleNode
 

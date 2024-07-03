@@ -1,4 +1,5 @@
 import Foundation
+import _Blocks
 
 /// A protocol to start using blocks to describe your terminal experience
 public protocol ChromaShell {

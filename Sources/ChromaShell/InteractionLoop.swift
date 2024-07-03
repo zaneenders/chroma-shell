@@ -1,4 +1,5 @@
 import Foundation
+import _Blocks
 
 /// This Encapsulates the data needed for UI updates. It's current privacy
 /// focus is to setup and tear down the Terminal using ~Copyable's bonus of

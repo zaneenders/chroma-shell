@@ -1,7 +1,7 @@
 import Observation
 
 /// The Commands that can be sent to update the state of the ``RenderObserver``.
-enum Command {
+public enum Command {
     case `in`
     case `out`
     case up
@@ -13,7 +13,7 @@ enum Command {
 
 /// The Modes in which RenderObserver can be in. This effects how input is
 /// interpreted
-enum Mode {
+public enum Mode {
     case normal
     case input
 }
@@ -22,13 +22,13 @@ enum Mode {
 /// survive where the translation and updates to the given Block are processed
 /// and passed to the terminal. This may get moved out of rendering and into
 /// Controller or Engine.
-actor RenderObserver {
+public actor RenderObserver {
     private let block: any Block
     // Holds the current state between render passes. Mostly updated via
     // commands like up, down, left, right, in, out.
     private var graphState: SelectedStateNode? = nil
     /// Displays the current ``Mode`` that the RenderObserver is in.
-    private(set) var mode: Mode = .normal
+    private(set) public var mode: Mode = .normal
     private var renderer: any Renderer.Type
     private var x: Int
     private var y: Int
@@ -46,21 +46,23 @@ actor RenderObserver {
     /// ``VisibleNode`` then render called with the current x and y values.
     /// Which if updated before the command call will not change between there
     /// and when they are passed to render.
-    init(_ block: some Block, _ x: Int, _ y: Int, _ renderer: any Renderer.Type)
-    {
+    public init(
+        _ block: some Block, _ x: Int, _ y: Int, _ renderer: any Renderer.Type
+    ) {
         self.x = x
         self.y = y
         self.renderer = renderer
         self.block = block
     }
 
-    func updateSize(_ x: Int, _ y: Int) {
+    public func updateSize(_ x: Int, _ y: Int) {
         self.x = x
         self.y = y
     }
 
     /// Signal the update to rerendered.
-    func startObservation() {
+    // Maybe this should go in init?
+    public func startObservation() {
         withObservationTracking {
             render()
         } onChange: {
@@ -70,7 +72,7 @@ actor RenderObserver {
 
     /// Used to interact with the graph.
     /// Examples: changing state, pressing buttons, changing position
-    func command(_ cmd: Command) {
+    public func command(_ cmd: Command) {
 
         // First render() takes care of optional
         let (r, m) = self.graphState!.apply(command: cmd)
@@ -85,8 +87,9 @@ actor RenderObserver {
     }
 
     /// Draw to the screen, put the available data on the terminal.
-    func render() {
-        let (state, visible) = self.block.pipeline(self.graphState)
+    public func render() {
+        let (state, visible) = self.block.pipeline(
+            self.graphState, self.x, self.y)
         self.graphState = state
         renderer.init(visible).render(x, y)
     }

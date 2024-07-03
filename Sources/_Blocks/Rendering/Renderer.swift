@@ -1,5 +1,5 @@
 /// This type is responsible for output to the display of the current setup.
-protocol Renderer {
+public protocol Renderer {
     /// This will be called per frame so keep the work between initialization
     /// and render light.
     init(_ graph: VisibleNode)
