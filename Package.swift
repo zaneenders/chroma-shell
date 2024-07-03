@@ -46,6 +46,8 @@ let package = Package(
             name: "_Blocks"),
         .testTarget(
             name: "ChromaShellTests", dependencies: ["ChromaShell", "_Blocks"]),
+        .testTarget(
+            name: "_BlocksTests", dependencies: ["_Blocks"]),
         .plugin(
             name: "SwiftFormatPlugin",
             capability: .command(

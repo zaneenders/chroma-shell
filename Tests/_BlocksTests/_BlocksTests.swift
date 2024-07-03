@@ -1,10 +1,8 @@
 import XCTest
 
-@testable import ChromaShell
 @testable import _Blocks
 
-/// Contains test related to the up, down, left, right, in, out commands.
-final class MovementTests: XCTestCase {
+final class _BlocksTests: XCTestCase {
 
     func testIn1() async throws {
         let start: SelectedStateNode = .selected(

@@ -1,6 +1,7 @@
 import XCTest
 
 @testable import ChromaShell
+// TODO remove this import just test ChromaShell
 @testable import _Blocks
 
 final class ChromaShellTests: XCTestCase {
