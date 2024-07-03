@@ -17,7 +17,7 @@ import Foundation
 /// they are pressed. This is definitely a HACK on top of the terminal to test
 /// out an idea I have been stuck on as It seemed easier then learning how
 /// MacOS and other operating systems send key commands to programs.
-enum Terminal {
+public enum Terminal {
     static func enableRawMode() -> termios {
         // see https://stackoverflow.com/a/24335355/669586
         // init raw: termios variable
@@ -53,7 +53,7 @@ enum Terminal {
     }
 
     /// Returns the max dimensions of the current Terminal
-    static func size() -> TerminalSize {
+    public static func size() -> TerminalSize {
         // TODO look into the SIGWINCH signal maybe replace this function or
         // its call sites.
         var w: winsize = initCStruct()
@@ -75,9 +75,9 @@ enum Terminal {
     }
 }
 
-struct TerminalSize: Hashable {
-    let x: Int
-    let y: Int
+public struct TerminalSize: Hashable {
+    public let x: Int
+    public let y: Int
 }
 
 extension Terminal {
@@ -88,7 +88,7 @@ extension Terminal {
     */
 
     /// Should be called at the beginning of the program to setup the screen state correctly.
-    static func setup() {
+    public static func setup() {
         FileHandle.standardOutput.write(Data(setupCode.utf8))
     }
 
@@ -104,7 +104,7 @@ extension Terminal {
     }
 
     /// Resets the terminal and cursor to the screen.
-    static func reset() {
+    public static func reset() {
         clear()
         FileHandle.standardOutput.write(Data(Terminal.restCode.utf8))
     }

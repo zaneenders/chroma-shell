@@ -7,13 +7,13 @@ extension FileHandle {
     /// Return an iterator over the bytes in the file.
     ///
     /// - returns: An iterator for UInt8 elements.
-    func asyncByteIterator() -> _FileHandleAsyncByteIterator {
+    public func asyncByteIterator() -> _FileHandleAsyncByteIterator {
         return _FileHandleAsyncByteIterator(fileHandle: self)
     }
 
-    struct _FileHandleAsyncByteIterator: AsyncSequence {
+    public struct _FileHandleAsyncByteIterator: AsyncSequence {
 
-        typealias Element = UInt8
+        public typealias Element = UInt8
 
         let fileHandle: FileHandle
 
@@ -21,12 +21,12 @@ extension FileHandle {
             self.fileHandle = fileHandle
         }
 
-        struct AsyncIterator: AsyncIteratorProtocol {
-            typealias Element = UInt8
+        public struct AsyncIterator: AsyncIteratorProtocol {
+            public typealias Element = UInt8
             let fileHandle: FileHandle
 
             @available(*, deprecated, message: "Really bad, but works for now")
-            mutating func next() async throws -> UInt8? {
+            public mutating func next() async throws -> UInt8? {
                 guard let data: Data = try fileHandle.read(upToCount: 1) else {
                     throw AsyncIteratorError.readError
                 }
@@ -34,7 +34,7 @@ extension FileHandle {
             }
         }
 
-        func makeAsyncIterator() -> AsyncIterator {
+        public func makeAsyncIterator() -> AsyncIterator {
             return AsyncIterator(fileHandle: fileHandle)
         }
     }

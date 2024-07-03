@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "ChromaShell", targets: ["ChromaShell"])
     ],
     dependencies: [
+        // .package(path: "../scribe"),
         .package(
             url: "https://github.com/zaneenders/scribe.git",
             branch: "main"),

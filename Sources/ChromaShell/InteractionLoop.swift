@@ -7,12 +7,12 @@ import ScribeCore
 struct InteractionLoop: ~Copyable {
 
     private let originalConfig = Terminal.enableRawMode()
-    private let renderer: RenderObserver
+    private let scribe: Scribe
 
     init(_ block: some Block) async {
         let size = Terminal.size()
-        self.renderer = await RenderObserver(
-            block, size.x, size.y, draw)
+        self.scribe = await Scribe(
+            observing: block, width: size.x, height: size.y)
         Terminal.setup()
     }
 
@@ -27,7 +27,7 @@ struct InteractionLoop: ~Copyable {
 
         var size = Terminal.size()
         // Draw the first frame
-        let frame = await renderer.current
+        let frame = await scribe.current
         draw(frame, size.x, size.y)
         do {
             for try await byte in fileHandleForStandardIn.asyncByteIterator() {
@@ -38,17 +38,17 @@ struct InteractionLoop: ~Copyable {
 
                 // Update size for next frame
                 size = Terminal.size()
-                await renderer.updateSize(width: size.x, height: size.y)
+                await scribe.updateSize(width: size.x, height: size.y)
 
-                switch await renderer.mode {
+                switch await scribe.mode {
                 case .input:
                     switch code {
                     case .ctrlC:
-                        await renderer.command(.out)
+                        await scribe.command(.out)
                     default:
                         // TODO space not working
                         if let input = String(bytes: [byte], encoding: .utf8) {
-                            await renderer.command(.unsafeInput(input))
+                            await scribe.command(.unsafeInput(input))
                         }
                     }
                 case .normal:
@@ -56,17 +56,17 @@ struct InteractionLoop: ~Copyable {
                     case .ctrlC:
                         return
                     case .lowerCaseL:
-                        await renderer.command(.in)
+                        await scribe.command(.in)
                     case .lowerCaseS:
-                        await renderer.command(.out)
+                        await scribe.command(.out)
                     case .lowerCaseJ:
-                        await renderer.command(.down)
+                        await scribe.command(.down)
                     case .lowerCaseF:
-                        await renderer.command(.up)
+                        await scribe.command(.up)
                     case .lowerCaseK:
-                        await renderer.command(.right)
+                        await scribe.command(.right)
                     case .lowerCaseD:
-                        await renderer.command(.left)
+                        await scribe.command(.left)
                     default:
                         ()
                     }

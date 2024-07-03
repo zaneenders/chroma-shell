@@ -1,13 +1,15 @@
 import ScribeCore
 
-struct Consumed: Equatable {
+public struct Consumed: Equatable {
     let x: Int
     let y: Int
 }
 
 extension VisibleNode {
     /// Draw / render the VisibleNode consuming the max width and height given.
-    func drawVisible(_ width: Int, _ height: Int) -> (ANSIString, Consumed) {
+    public func drawVisible(_ width: Int, _ height: Int) -> (
+        ANSIString, Consumed
+    ) {
         switch self {
         case let .entry(s):
             return (s, Consumed(x: s.count, y: 1))

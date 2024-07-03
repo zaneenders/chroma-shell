@@ -30,7 +30,7 @@ final class ChromaShellTests: XCTestCase {
         }
         let height = 24
         let width = 80
-        let renderer = await RenderObserver(t, width, height)
+        let renderer = await Scribe(observing: t, width: width, height: height)
         await renderer.command(.out)
         let visible = await renderer.current
         let c = visible.drawVisible(width, height).1
@@ -44,7 +44,7 @@ final class ChromaShellTests: XCTestCase {
         }
         let height = 24
         let width = 80
-        let renderer = await RenderObserver(t, width, height)
+        let renderer = await Scribe(observing: t, width: width, height: height)
         await renderer.command(.out)
         let visible = await renderer.current
         let c = visible.drawVisible(width, height).1

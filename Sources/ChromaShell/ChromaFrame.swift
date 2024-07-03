@@ -3,12 +3,12 @@ public struct ChromaFrame {
 
     private let contents: String
 
-    init(
-        _ raw: String,
+    public init(
+        _ ascii: String,
         _ foreground: Color = .default,
         _ background: Color = .default
     ) {
-        self.contents = _wrap(raw, foreground, background)
+        self.contents = _wrap(ascii, foreground, background)
     }
 
     /// Creates a frame of the current size filled with the given char
@@ -42,7 +42,7 @@ extension ChromaFrame {
 
     /// Draws this ``ChromaFrame`` by sending ``AnsiEscapeCode`` to the
     /// terminal. Clearing the screen before hand.
-    func render() {
+    public func render() {
         Terminal.write(frame: asciiView)
     }
 }
