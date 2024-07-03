@@ -1,9 +1,11 @@
 /// The pipeline used to display the graph and apply user interaction updates.
 extension Block {
-    func pipeline(_ path: SelectedStateNode?) -> SelectedStateNode {
+    func pipeline(_ path: SelectedStateNode?) -> (
+        SelectedStateNode, VisibleNode
+    ) {
         var pathCopy = path
         let size = Terminal.size()
-        let ascii = self.readBlockTree(.vertical)
+        let visible = self.readBlockTree(.vertical)
             .flattenTuplesAndComposed()
             .mergeArraysIntoGroups()
             .wrapWithGroup()
@@ -11,15 +13,8 @@ extension Block {
             .createPath()
             .mergeState(with: &pathCopy)
             .computeVisible(size.x, size.y)
-            .drawVisible(size.x, size.y).0
-        ChromaFrame(ascii, .default, .default).render()
-        return pathCopy!
+        return (pathCopy!, visible)
     }
-}
-
-enum Mode {
-    case normal
-    case input
 }
 
 extension SelectedStateNode {

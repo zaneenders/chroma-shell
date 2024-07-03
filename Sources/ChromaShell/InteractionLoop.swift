@@ -9,7 +9,9 @@ struct InteractionLoop: ~Copyable {
     private let renderer: RenderObserver
 
     init(_ block: some Block) {
-        self.renderer = RenderObserver(block)
+        let size = Terminal.size()
+        self.renderer = RenderObserver(
+            block, size.x, size.y, TerminalRenderer.self)
         Terminal.setup()
     }
 
@@ -31,6 +33,8 @@ struct InteractionLoop: ~Copyable {
                 guard let code = AsciiKeyCode.decode(keyboard: byte) else {
                     continue
                 }
+                let size = Terminal.size()
+                await renderer.updateSize(size.x, size.y)
                 switch await renderer.mode {
                 case .input:
                     switch code {
