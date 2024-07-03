@@ -1,10 +1,9 @@
-import Chroma
 import ChromaShell
 import Foundation
 // Using Swift NIO as it has better async file API's right now. This should all
 // get replaced by Swift SubProcess.
 import NIOCore
-import _Blocks
+import ScribeCore
 import _NIOFileSystem
 
 @main

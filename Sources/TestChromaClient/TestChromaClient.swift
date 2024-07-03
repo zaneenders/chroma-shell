@@ -1,6 +1,6 @@
 import ChromaShell
 import Observation
-import _Blocks
+import ScribeCore
 
 @main
 struct TestChromaClient: ChromaShell {

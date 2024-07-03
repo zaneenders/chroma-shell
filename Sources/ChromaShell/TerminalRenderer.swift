@@ -1,17 +1,4 @@
-import _Blocks
-
-struct TerminalRenderer: Renderer {
-    let graph: VisibleNode
-
-    init(_ graph: VisibleNode) {
-        self.graph = graph
-    }
-
-    func render(_ x: Int, _ y: Int) {
-        let ascii = self.graph.drawVisible(x, y).0
-        ChromaFrame(ascii, .default, .default).render()
-    }
-}
+import ScribeCore
 
 struct Consumed: Equatable {
     let x: Int

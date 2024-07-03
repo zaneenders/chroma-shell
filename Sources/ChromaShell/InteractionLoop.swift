@@ -1,5 +1,5 @@
 import Foundation
-import _Blocks
+import ScribeCore
 
 /// This Encapsulates the data needed for UI updates. It's current privacy
 /// focus is to setup and tear down the Terminal using ~Copyable's bonus of
@@ -9,10 +9,10 @@ struct InteractionLoop: ~Copyable {
     private let originalConfig = Terminal.enableRawMode()
     private let renderer: RenderObserver
 
-    init(_ block: some Block) {
+    init(_ block: some Block) async {
         let size = Terminal.size()
-        self.renderer = RenderObserver(
-            block, size.x, size.y, TerminalRenderer.self)
+        self.renderer = await RenderObserver(
+            block, size.x, size.y, draw)
         Terminal.setup()
     }
 
@@ -25,17 +25,21 @@ struct InteractionLoop: ~Copyable {
         let standardInput = Process().standardInput
         let fileHandleForStandardIn = standardInput as! FileHandle
 
-        // Start Observation runtime which displays 1st frame
-        await renderer.startObservation()
-
+        var size = Terminal.size()
+        // Draw the first frame
+        let frame = await renderer.current
+        draw(frame, size.x, size.y)
         do {
             for try await byte in fileHandleForStandardIn.asyncByteIterator() {
                 // update on input
                 guard let code = AsciiKeyCode.decode(keyboard: byte) else {
                     continue
                 }
-                let size = Terminal.size()
-                await renderer.updateSize(size.x, size.y)
+
+                // Update size for next frame
+                size = Terminal.size()
+                await renderer.updateSize(width: size.x, height: size.y)
+
                 switch await renderer.mode {
                 case .input:
                     switch code {
@@ -76,4 +80,9 @@ struct InteractionLoop: ~Copyable {
             return
         }
     }
+}
+
+func draw(_ visible: VisibleNode, _ x: Int, _ y: Int) {
+    let ascii = visible.drawVisible(x, y).0
+    ChromaFrame(ascii, .default, .default).render()
 }

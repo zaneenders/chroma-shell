@@ -10,6 +10,10 @@ let package = Package(
         .library(name: "ChromaShell", targets: ["ChromaShell"])
     ],
     dependencies: [
+        .package(path: "../scribe"),
+        // .package(
+        //     url: "https://github.com/zaneenders/scribe.git",
+        //     branch: "main"),
         .package(
             url: "https://github.com/apple/swift-nio.git",
             from: "2.66.0"),
@@ -41,13 +45,13 @@ let package = Package(
             ],
             swiftSettings: swiftSettings),
         .target(
-            name: "ChromaShell", dependencies: ["_Blocks"]),
-        .target(
-            name: "_Blocks"),
+            name: "ChromaShell",
+            dependencies: [.product(name: "ScribeCore", package: "scribe")]),
         .testTarget(
-            name: "ChromaShellTests", dependencies: ["ChromaShell", "_Blocks"]),
-        .testTarget(
-            name: "_BlocksTests", dependencies: ["_Blocks"]),
+            name: "ChromaShellTests",
+            dependencies: [
+                "ChromaShell", .product(name: "ScribeCore", package: "scribe"),
+            ]),
         .plugin(
             name: "SwiftFormatPlugin",
             capability: .command(

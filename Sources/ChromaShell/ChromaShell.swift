@@ -1,5 +1,5 @@
 import Foundation
-import _Blocks
+import ScribeCore
 
 /// A protocol to start using blocks to describe your terminal experience
 public protocol ChromaShell {
@@ -10,7 +10,7 @@ public protocol ChromaShell {
 
 extension ChromaShell {
     public static func main() async {
-        let runtime = InteractionLoop(self.init().main)
+        let runtime = await InteractionLoop(self.init().main)
         await runtime.start()
     }
 }
