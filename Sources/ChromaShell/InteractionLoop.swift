@@ -12,7 +12,7 @@ struct InteractionLoop: ~Copyable {
     init(_ block: some Block) async {
         let size = Terminal.size()
         self.scribe = await Scribe(
-            observing: block, width: size.x, height: size.y)
+            observing: block, width: size.x, height: size.y, draw(_:_:_:))
         Terminal.setup()
     }
 
