@@ -97,7 +97,7 @@ extension Terminal {
     */
 
     /// Should be called at the beginning of the program to setup the screen state correctly.
-    public static func setup() {
+    private static func setup() {
         FileHandle.standardOutput.write(Data(setupCode.utf8))
     }
 
