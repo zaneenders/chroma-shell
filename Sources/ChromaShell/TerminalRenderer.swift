@@ -10,12 +10,10 @@ extension VisibleNode {
     /// passed to us Almost fit into the height and width we have provided. The
     /// job of this function is to tile or materialize the nodes into ASCII
     /// escape codes.
-    ///
     /// The following assumptions are being made for now. This is currently
     /// serving as the outline for what I would like the algorithm to be. But
     /// as there isn't something I know a lot about how to do correctly or
     /// really know the best way to achieve this.
-    ///
     /// Scribe grantees something to be visual selected. This might sound
     /// strange to some of you but if you think of your mouse or finger before
     /// you actually click this is sort of a way of selecting. Obviously those
@@ -30,28 +28,25 @@ extension VisibleNode {
     /// middle of the screen for now. Soon after I debug this algorithm I plan
     /// to surface apis for suggesting the text to be left or right, top or
     /// bottom. But I think a nice default is for the text to be centered.
-    ///
     /// I haven't really thought how to handle clipping or word wrapping yet.
     /// For now I think it's best to just clip the text and allow the user to
     /// pan around the graph. Which will mean I need to extend the
     /// ``VisibleNode`` type to allow deeper selections with in lines/ words
     /// This will also be needed to visualize selecting charters of a word in a
     /// text editor which I am to build with this UI/UX framework.
-    ///
     /// I guess the last thing I should mentioned is text should consume the
     ///  amount of space possible. Until the size of all nodes is know and we
     ///  know how much space to fill in around the information needing to be
     /// displayed.
-    ///
     /// Hopefully this helps other developers understanding what is going on
     /// here or at least future Zane. I have a somewhat working example of what
     /// i'm trying to do in the ScribeModel repo. But I made different
     /// assumptions about the AST there so the problem is just different enough
     /// here but it is possible.
-    #warning("This is very broken and buggy right now")
     public func drawVisible(_ width: Int, _ height: Int) -> (
         ANSIString, Consumed
     ) {
+        #warning("This is very broken and buggy right now")
         switch self {
         case let .entry(s):
             return (s, Consumed(x: s.count, y: 1))
