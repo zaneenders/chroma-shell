@@ -35,7 +35,8 @@ struct FileSystemBlock: Block {
 @main
 struct FileSystemMain: ChromaShell {
     var main: some Block {
-        FileSystemBlock()
+        // FileSystemBlock()
+        "Hello Zane"
     }
 }
 
