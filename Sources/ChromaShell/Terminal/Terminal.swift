@@ -17,11 +17,31 @@ import Foundation
 /// they are pressed. This is definitely a HACK on top of the terminal to test
 /// out an idea I have been stuck on as It seemed easier then learning how
 /// MacOS and other operating systems send key commands to programs.
-public enum Terminal {
-    static func enableRawMode() -> termios {
+public struct Terminal: ~Copyable {
+    private let prev: termios
+
+    public init() {
+        self.prev = Terminal.enableRawMode()
+        Terminal.setup()
+    }
+
+    /// Restore the original terminal config
+    /// Clear the last frame from the screen
+    deinit {
+        Terminal.restore(prev)
+        Terminal.reset()
+    }
+
+    private static func restore(_ originalConfig: termios) {
+        var term = originalConfig
+        // restores the original terminal state
+        tcsetattr(FileHandle.standardInput.fileDescriptor, TCSAFLUSH, &term)
+    }
+
+    private static func enableRawMode() -> termios {
         // see https://stackoverflow.com/a/24335355/669586
         // init raw: termios variable
-        var raw: termios = initCStruct()
+        var raw: termios = Terminal.initCStruct()
         // sets raw to a copy of the file handlers attributes
         tcgetattr(FileHandle.standardInput.fileDescriptor, &raw)
         // saves a copy of the original standard output file descriptor to revert back to
@@ -39,24 +59,17 @@ public enum Terminal {
         return originalConfig
     }
 
-    static func restore(_ originalConfig: termios) {
-        var term = originalConfig
-        // restores the original terminal state
-        tcsetattr(FileHandle.standardInput.fileDescriptor, TCSAFLUSH, &term)
-    }
-
-    static func initCStruct<S>() -> S {
+    private static func initCStruct<S>() -> S {
         let structPointer = UnsafeMutablePointer<S>.allocate(capacity: 1)
         let structMemory = structPointer.pointee
         structPointer.deallocate()
         return structMemory
     }
 
-    /// Returns the max dimensions of the current Terminal
-    public static func size() -> TerminalSize {
+    public var size: TerminalSize {
         // TODO look into the SIGWINCH signal maybe replace this function or
         // its call sites.
-        var w: winsize = initCStruct()
+        var w: winsize = Terminal.initCStruct()
         //???: Is it possible to get a call back or notification of when the window is resized
         _ = ioctl(STDOUT_FILENO, UInt(TIOCGWINSZ), &w)
         // Check that we have a valid window size
@@ -69,10 +82,6 @@ public enum Terminal {
         }
     }
 
-    enum TerminalSizeError: Error {
-        case hight
-        case width
-    }
 }
 
 public struct TerminalSize: Hashable {
@@ -93,13 +102,13 @@ extension Terminal {
     }
 
     /// Used to write the contents of of the frame to the screen.
-    static func write(frame strFrame: String) {
+    public static func write(frame strFrame: String) {
         clear()
         FileHandle.standardOutput.write(Data(strFrame.utf8))
     }
 
     /// clears the screen to setup, reset or write a new frame to the screen.
-    static func clear() {
+    private static func clear() {
         FileHandle.standardOutput.write(Data(Terminal.clearCode.utf8))
     }
 
@@ -109,17 +118,17 @@ extension Terminal {
         FileHandle.standardOutput.write(Data(Terminal.restCode.utf8))
     }
 
-    static var restCode: String {
+    private static var restCode: String {
         AnsiEscapeCode.Cursor.show.rawValue
             + AnsiEscapeCode.Cursor.Style.Block.blinking.rawValue
             + AnsiEscapeCode.home.rawValue
     }
 
-    static var setupCode: String {
+    private static var setupCode: String {
         AnsiEscapeCode.Cursor.hide.rawValue + clearCode
     }
 
-    static var clearCode: String {
+    private static var clearCode: String {
         AnsiEscapeCode.eraseScreen.rawValue + AnsiEscapeCode.eraseSaved.rawValue
             + AnsiEscapeCode.home.rawValue
             + AnsiEscapeCode.Cursor.Style.Block.blinking.rawValue

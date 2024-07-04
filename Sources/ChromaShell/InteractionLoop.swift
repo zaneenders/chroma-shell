@@ -6,29 +6,22 @@ import ScribeCore
 /// having a deinit for structs.
 struct InteractionLoop: ~Copyable {
 
-    private let originalConfig = Terminal.enableRawMode()
     private let scribe: Scribe
+    let terminal: Terminal = Terminal()
 
     init(_ block: some Block) async {
-        let size = Terminal.size()
         self.scribe = await Scribe(
-            observing: block, width: size.x, height: size.y, draw(_:_:_:))
-        Terminal.setup()
+            observing: block, width: terminal.size.x, height: terminal.size.y, draw(_:_:_:))
     }
 
-    deinit {
-        Terminal.restore(originalConfig)
-        Terminal.reset()
-    }
 
     func start() async {
         let standardInput = Process().standardInput
         let fileHandleForStandardIn = standardInput as! FileHandle
 
-        var size = Terminal.size()
         // Draw the first frame
         let frame = await scribe.current
-        draw(frame, size.x, size.y)
+        draw(frame, terminal.size.x, terminal.size.y)
         do {
             for try await byte in fileHandleForStandardIn.asyncByteIterator() {
                 // update on input
@@ -37,8 +30,7 @@ struct InteractionLoop: ~Copyable {
                 }
 
                 // Update size for next frame
-                size = Terminal.size()
-                await scribe.updateSize(width: size.x, height: size.y)
+                await scribe.updateSize(width: terminal.size.x, height: terminal.size.y)
 
                 switch await scribe.mode {
                 case .input:
@@ -75,7 +67,6 @@ struct InteractionLoop: ~Copyable {
         } catch let error {
             // Lets keep all errors internal as we are changing the default behavior of the Terminal
             // TODO logging
-            Terminal.reset()
             print(error.localizedDescription)
             return
         }

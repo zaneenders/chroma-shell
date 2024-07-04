@@ -15,17 +15,16 @@ public struct ChromaFrame {
     /// NOTE: we can not test this as the test terminal has no size. I
     /// wonder if can detect if testing or just have to work around this.
     init(
-        fill char: Character,
+        fill char: Character, _ height: Int, _ width: Int,
         _ foreground: Color = .default,
         _ background: Color = .default
     ) {
         var out = ""
-        let size = Terminal.size()
-        for y in 0...size.y {
-            for _ in 1...size.x {
+        for y in 0...height {
+            for _ in 1...width {
                 out += "\(char)"
             }
-            if y != size.y {
+            if y != height {
                 out += "\n"
             }
         }
