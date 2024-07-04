@@ -34,7 +34,8 @@ let package = Package(
         .executableTarget(
             name: "FileSystem",
             dependencies: [
-                "ChromaShell"
+                "ChromaShell",
+                .product(name: "_NIOFileSystem", package: "swift-nio"),
             ],
             swiftSettings: swiftSettings),
         .executableTarget(
