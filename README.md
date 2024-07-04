@@ -37,4 +37,10 @@ Checkout the docs for more details about the project.
 ## More Examples
 
 [Shell Example](Sources/ShellExample/ShellExample.swift)
-A simple example of running a shell command in the background
+A simple example of running a shell command in the background.
+
+[AsyncUpdate](Sources/AsyncUpdate/AsyncUpdate.swift)
+Shows the ui updating from an external async source.
+
+[FileSystem](Sources/FileSystem/FileSystem.swift)
+An example browsing the file system.

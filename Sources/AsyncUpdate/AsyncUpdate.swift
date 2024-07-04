@@ -3,7 +3,7 @@ import Observation
 import ScribeCore
 
 @main
-struct TestChromaClient: ChromaShell {
+struct AsyncUpdate: ChromaShell {
     var main: some Block {
         TestBlock()
     }

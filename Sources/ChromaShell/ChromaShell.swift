@@ -77,7 +77,6 @@ extension ChromaShell {
     }
 }
 
-
 func draw(_ visible: VisibleNode, _ x: Int, _ y: Int) {
     let ascii = visible.drawVisible(x, y).0
     ChromaFrame(ascii, .default, .default).render()

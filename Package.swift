@@ -32,7 +32,13 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "TestChromaClient",
+            name: "FileSystem",
+            dependencies: [
+                "ChromaShell"
+            ],
+            swiftSettings: swiftSettings),
+        .executableTarget(
+            name: "AsyncUpdate",
             dependencies: [
                 "ChromaShell"
             ],
