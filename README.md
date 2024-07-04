@@ -1,6 +1,6 @@
 # Chroma Shell
 
-A basic Swift DSL for making more interactive tools of your shell.
+A basic Swift DSL for making more interactive tools for your shell.
 
 ## Getting started
 
@@ -13,8 +13,7 @@ Add Chroma Shell to your swift package to give it a try.
 .product(name: "ChromaShell", package: "chroma-shell"),
 ```
 
-You can also clone the repo and `swift run` to try out the sample found at [TestChromaClient](Sources/TestChromaClient/TestChromaClient.swift).
-
+You can also clone the repo and `swift run AsyncUpdate` or the name of one of the examples you wanna try.
 
 ### Hello world
 
@@ -34,9 +33,9 @@ struct Scribe: ChromaShell {
 
 Checkout the docs for more details about the project.
 
-## More Examples
+## Examples
 
-[Shell Example](Sources/ShellExample/ShellExample.swift)
+[ShellExample](Sources/ShellExample/ShellExample.swift)
 A simple example of running a shell command in the background.
 
 [AsyncUpdate](Sources/AsyncUpdate/AsyncUpdate.swift)
