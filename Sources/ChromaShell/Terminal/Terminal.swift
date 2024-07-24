@@ -7,10 +7,12 @@
 
 import Foundation
 
-#if os(Linux)
-    import Glibc
-#else
+#if os(macOS) || os(iOS)
     import Darwin
+#elseif canImport(Glibc)
+    import Glibc
+#elseif canImport(Musl)
+    import Musl
 #endif
 
 /// Sets up the Terminal to be in raw mode so we receive the key commands as
